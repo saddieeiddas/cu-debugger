@@ -17,22 +17,14 @@ var baseConfig = {
   }
 };
 
-function JsonLog(log) {
-  console.log(log.message);
-}
-
 Chrome(baseConfig, function(chrome) {
   setInterval(function() {
-    LogFPS(chrome);
+    chrome.Runtime.evaluate({
+      expression: 'cuAPI.fps'
+    }, function(err, response) {
+      if (!err) {
+        console.log(response.result.value);
+      }
+    });
   }, 1000);
 });
-
-function LogFPS(chrome) {
-  chrome.Runtime.evaluate({
-    expression: 'cuAPI.fps'
-  }, function(err, response) {
-    if (!err) {
-      console.log(response.result.value);
-    }
-  });
-}
